@@ -1,17 +1,16 @@
 import printer.BinaryTrees;
+import tree.AVLTree;
 import tree.BST;
 
 public class Main {
     public static void main(String[] args) {
         Integer[] data = new Integer[]{
-                7, 4, 9, 2, 5, 8, 11, 3
+                100, 45, 68, 93, 94, 74, 60, 84, 50, 29, 58, 44, 78, 96, 37, 40
         };
-        BST<Integer> bst = new BST<>();
+        AVLTree<Integer> bst = new AVLTree<>();
         for (int i = 0; i < data.length; i++) {
             bst.add(data[i]);
         }
         BinaryTrees.println(bst);
-
-        bst.preorderTraversal();
     }
 }
