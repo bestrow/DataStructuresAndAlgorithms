@@ -14,6 +14,19 @@ public class AVLTree<E> extends BST<E> {
     }
 
     @Override
+    protected void afterRemove(Node<E> node) {
+        while ((node = node.parent) != null) {
+            if (isBalance(node)) {
+                // 更新高度
+                updateHeight(node);
+            } else {
+                // 恢复平衡
+                rebalance(node);
+            }
+        }
+    }
+
+    @Override
     protected void afterAdd(Node<E> node) {
         while ((node = node.parent) != null) {
             if (isBalance(node)) {
@@ -48,6 +61,66 @@ public class AVLTree<E> extends BST<E> {
                 rotateLeft(grandParent);
             }
         }
+    }
+
+    /**
+     * 恢复平衡
+     */
+    private void rebalance2(Node<E> grandParent) {
+        Node<E> parent = ((AVLNode<E>) grandParent).tallChild();
+        Node<E> node = ((AVLNode<E>) parent).tallChild();
+        if (parent.isLeftChild()) { // L
+            if (node.isLeftChild()) { // LL
+                rotate(grandParent, node.left, node, node.right, parent, parent.right, grandParent, grandParent.right);
+            } else { //LR
+                rotate(grandParent, parent.left, parent, node.left, node, node.right, grandParent, grandParent.right);
+            }
+        } else { // R
+            if (node.isLeftChild()) { // RL
+                rotate(grandParent, grandParent.left, grandParent, node.left, node, node.right, parent, parent.right);
+            } else { // RR
+                rotate(grandParent, grandParent.left, grandParent, parent.left, parent, node.left, node, node.right);
+            }
+        }
+    }
+
+    private void rotate(
+            Node<E> r, // 子树的根节点
+            Node<E> a, Node<E> b, Node<E> c,
+            Node<E> d,
+            Node<E> e, Node<E> f, Node<E> g) {
+
+        // 让d成为这颗子树的根节点
+        d.parent = r.parent;
+        if (r.isLeftChild()) {
+            r.parent.left = d;
+        } else if (r.isRightChild()) {
+            r.parent.right = d;
+        } else {
+            root = d;
+        }
+
+        // a-b-c
+        b.left = a;
+        if (a != null) a.parent = b;
+        b.right = c;
+        if (a != null) c.parent = b;
+        updateHeight(b);
+
+
+        // e-f-g
+        f.left = e;
+        if (e != null) e.parent = f;
+        f.right = g;
+        if (g != null) g.parent = f;
+        updateHeight(f);
+
+        // b-d-f
+        d.left = b;
+        b.parent = d;
+        d.right = f;
+        f.parent = d;
+        updateHeight(d);
     }
 
     private void rotateLeft(Node<E> grand) {
@@ -132,6 +205,15 @@ public class AVLTree<E> extends BST<E> {
             if (leftHeight > rightHeight) return left;
             if (leftHeight < rightHeight) return right;
             return isLeftChild() ? left : right;
+        }
+
+        @Override
+        public String toString() {
+            String parentStr = null;
+            if (this.parent != null) {
+                parentStr = this.parent.element.toString();
+            }
+            return this.element + "_p(" + parentStr + ")_h(" + height + ")";
         }
     }
 }
