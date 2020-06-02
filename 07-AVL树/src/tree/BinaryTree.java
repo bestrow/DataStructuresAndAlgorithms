@@ -366,6 +366,15 @@ public class BinaryTree<E> implements BinaryTreeInfo {
         public boolean isRightChild() {
             return parent != null && parent.right == this;
         }
+
+        @Override
+        public String toString() {
+            String parentStr = null;
+            if (this.parent != null) {
+                parentStr = this.parent.element.toString();
+            }
+            return this.element + "_p(" + parentStr + ")";
+        }
     }
 
     public static abstract class Visitor<E> {
@@ -394,11 +403,6 @@ public class BinaryTree<E> implements BinaryTreeInfo {
 
     @Override
     public Object string(Object node) {
-        Node<E> myNode = (Node<E>) node;
-        String parentStr = null;
-        if (myNode.parent != null) {
-            parentStr = myNode.parent.element.toString();
-        }
-        return myNode.element + "_p(" + parentStr + ")";
+        return node;
     }
 }
