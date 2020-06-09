@@ -65,14 +65,11 @@ public class RBTree<E> extends BBST<E> {
     }
 
     @Override
-    protected void afterRemove(Node<E> node, Node<E> replacement) {
+    protected void afterRemove(Node<E> node) {
         // 如果删除的节点是红色
+        // 或者 用以取代删除节点的子节点是红色
         if (isRed(node)) {
-            return;
-        }
-        // 用以取代node的子节点是红色
-        if (isRed(replacement)) {
-            black(replacement);
+            black(node);
             return;
         }
         Node<E> parent = node.parent;
@@ -101,7 +98,7 @@ public class RBTree<E> extends BBST<E> {
                 black(parent);
                 red(sibling);
                 if (parentBlack) {
-                    afterRemove(parent, null);
+                    afterRemove(parent);
                 }
             } else { // 兄弟节点至少有一个红色子节点,向兄弟节点借元素
                 // 兄弟节点的左边是黑色,兄弟要先旋转
@@ -129,7 +126,7 @@ public class RBTree<E> extends BBST<E> {
                 black(parent);
                 red(sibling);
                 if (parentBlack) {
-                    afterRemove(parent, null);
+                    afterRemove(parent);
                 }
             } else { // 兄弟节点至少有一个红色子节点,向兄弟节点借元素
                 // 兄弟节点的左边是黑色,兄弟要先旋转
@@ -185,11 +182,7 @@ public class RBTree<E> extends BBST<E> {
             if (color == RED) {
                 str = "R_";
             }
-            String parentStr = null;
-            if (this.parent != null) {
-                parentStr = this.parent.element.toString();
-            }
-            return str + this.element + "_p(" + parentStr + ")";
+            return str + this.element;
         }
     }
 }

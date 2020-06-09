@@ -1,6 +1,7 @@
 import printer.BinaryTrees;
 import tree.AVLTree;
 import tree.BST;
+import tree.BinaryTree;
 import tree.RBTree;
 
 public class Main {
@@ -13,5 +14,12 @@ public class Main {
             rb.add(data[i]);
         }
         BinaryTrees.println(rb);
+
+        for (int i = 0; i < data.length; i++) {
+            rb.remove(data[i]);
+            System.out.println("-----------------------");
+            System.out.println("【"+data[i]+"】");
+            BinaryTrees.println(rb);
+        }
     }
 }
