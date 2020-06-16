@@ -2,7 +2,7 @@ package set;
 
 public interface Set<E> {
 
-    int Size();
+    int size();
 
     boolean isEmpty();
 

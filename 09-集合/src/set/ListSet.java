@@ -8,7 +8,7 @@ public class ListSet<E> implements Set<E> {
     private List<E> list = new LinkedList<>();
 
     @Override
-    public int Size() {
+    public int size() {
         return list.size();
     }
 

@@ -18,7 +18,7 @@ public class TreeSet<E> implements Set<E> {
     }
 
     @Override
-    public int Size() {
+    public int size() {
         return tree.size();
     }
 
